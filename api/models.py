@@ -24,6 +24,7 @@ class Channel(models.Model):
     type = models.CharField(max_length=20, choices=TYPE_CHOICES)
     label = models.CharField(max_length=100)
     link = models.CharField(max_length=200, blank=True, null=True)
+    phone_number = models.CharField(max_length=20, blank=True, null=True, help_text="Номер телефона для каналов типа 'call'")
     online_policy = models.CharField(max_length=100, blank=True, null=True)
     show_in_top = models.BooleanField(default=False)
     priority = models.IntegerField(default=0)
@@ -99,3 +100,36 @@ class CallbackRequest(models.Model):
 
     def __str__(self):
         return f"Callback request - {self.phone}"
+
+class ChatSession(models.Model):
+    project = models.ForeignKey(ProjectConfig, on_delete=models.CASCADE, related_name='chat_sessions')
+    client_id = models.CharField(max_length=100)
+    page_url = models.CharField(max_length=500, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        ordering = ['-updated_at']
+
+    def __str__(self):
+        return f"Chat session {self.id} - {self.client_id}"
+
+class ChatMessage(models.Model):
+    MESSAGE_TYPES = [
+        ('user', 'User'),
+        ('admin', 'Admin'),
+        ('system', 'System'),
+    ]
+    
+    session = models.ForeignKey(ChatSession, on_delete=models.CASCADE, related_name='messages')
+    message_type = models.CharField(max_length=10, choices=MESSAGE_TYPES)
+    content = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+    is_read = models.BooleanField(default=False)
+
+    class Meta:
+        ordering = ['created_at']
+
+    def __str__(self):
+        return f"{self.message_type}: {self.content[:50]}..."

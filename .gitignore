@@ -8,4 +8,12 @@ __pycache__
 *.pywz
 *.pyzw
 *.pyzwz
+.env
+.venv
+venv
+.DS_Store
+.vscode
+.idea
+.pytest_cache
+.coverage
 
