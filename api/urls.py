@@ -1,8 +1,18 @@
 from rest_framework.routers import DefaultRouter
-from .views import ChannelViewSet, LeadViewSet
+from django.urls import path, include
+from .views import (
+    ProjectConfigViewSet, ChannelViewSet, ScheduleViewSet, 
+    LeadViewSet, CallbackRequestViewSet, WidgetAPIView
+)
 
 router = DefaultRouter()
+router.register(r'projects', ProjectConfigViewSet)
 router.register(r'channels', ChannelViewSet)
-router.register(r'lead', LeadViewSet)
+router.register(r'schedules', ScheduleViewSet)
+router.register(r'leads', LeadViewSet)
+router.register(r'callbacks', CallbackRequestViewSet)
+router.register(r'widget', WidgetAPIView, basename='widget')
 
-urlpatterns = router.urls
+urlpatterns = [
+    path('', include(router.urls)),
+]
