@@ -3,7 +3,6 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from django.db import transaction
 from django.utils import timezone
-from datetime import datetime, time
 import pytz
 from .models import ProjectConfig, Channel, Schedule, Lead, CallbackRequest, ChatSession, ChatMessage
 from .serializers import (
