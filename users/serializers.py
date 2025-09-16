@@ -5,7 +5,7 @@ from .models import User
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'role', 'first_name', 'last_name', 'is_active', 'date_joined']
+        fields = ['id', 'email', 'role', 'plan', 'first_name', 'last_name', 'is_active', 'date_joined']
         read_only_fields = ['date_joined']
 
 
@@ -21,6 +21,7 @@ class RegisterSerializer(serializers.Serializer):
     first_name = serializers.CharField(required=True)
     last_name = serializers.CharField(required=True)
     role = serializers.ChoiceField(choices=[('admin','admin'), ('marketing','marketing'), ('viewer','viewer')], default='viewer')
+    plan = serializers.ChoiceField(choices=[('free','free'), ('pro','pro')], default='free')
 
 
 class ProfileUpdateSerializer(serializers.ModelSerializer):
@@ -36,4 +37,8 @@ class LogoutSerializer(serializers.Serializer):
 class MeSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'role', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff', 'is_superuser']
+        fields = ['id', 'email', 'role', 'plan', 'first_name', 'last_name', 'is_active', 'date_joined', 'is_staff', 'is_superuser']
+
+
+class PlanUpdateSerializer(serializers.Serializer):
+    plan = serializers.ChoiceField(choices=[('free','free'), ('pro','pro')])

@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     'leads',
     'chat',
     'abtests',
+    'widget',
 ]
 
 # Custom user model

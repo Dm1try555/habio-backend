@@ -11,6 +11,11 @@ class User(AbstractUser):
         ('viewer', 'Viewer'),
     ]
     role = models.CharField(max_length=20, choices=ROLE_CHOICES, default='viewer')
+    PLAN_CHOICES = [
+        ('free', 'Free'),
+        ('pro', 'Pro'),
+    ]
+    plan = models.CharField(max_length=20, choices=PLAN_CHOICES, default='free')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 

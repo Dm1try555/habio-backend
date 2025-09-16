@@ -1,7 +1,8 @@
-from django.urls import path
+from django.urls import path, include
+from rest_framework.routers import DefaultRouter
 from .views import (
-    UserListCreateView,
-    UserDetailView,
+    UserViewSet,
+    # Legacy views for backward compatibility
     LoginView,
     RegisterView,
     LogoutView,
@@ -9,14 +10,17 @@ from .views import (
     ProfileView,
     ProfileDeleteView,
     RefreshTokenView,
+    PlanUpdateView,
 )
 
-urlpatterns = [
-    # ===== Users =====
-    path('users/', UserListCreateView.as_view(), name='user-list-create'),
-    path('users/<int:pk>/', UserDetailView.as_view(), name='user-detail'),
+router = DefaultRouter()
+router.register(r'users', UserViewSet, basename='user')
 
-    # ===== Auth =====
+urlpatterns = [
+    # ===== ViewSet URLs =====
+    path('', include(router.urls)),
+    
+    # ===== Legacy Auth URLs (for backward compatibility) =====
     path('auth/login/', LoginView.as_view(), name='login'),
     path('auth/register/', RegisterView.as_view(), name='register'),
     path('auth/logout/', LogoutView.as_view(), name='logout'),
@@ -24,4 +28,5 @@ urlpatterns = [
     path('auth/profile/', ProfileView.as_view(), name='profile-update'),
     path('auth/profile/delete/', ProfileDeleteView.as_view(), name='profile-delete'),
     path('auth/refresh/', RefreshTokenView.as_view(), name='token-refresh'),
+    path('auth/plan/', PlanUpdateView.as_view(), name='plan-update'),
 ]

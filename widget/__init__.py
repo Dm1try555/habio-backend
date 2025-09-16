@@ -1,0 +1,1 @@
+# Widget app for handling widget-specific API endpoints
